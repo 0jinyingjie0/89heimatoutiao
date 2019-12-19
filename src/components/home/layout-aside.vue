@@ -39,6 +39,7 @@ export default {
 
 <style lang='less' scoped>
     .layout-aside {
+        overflow: hidden;
         width: 230px;
         .title{
             text-align:center;
