@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home'
 import Login from '../views/login'
+// 默认背景
+import homehome from '../views/home/home'
 
 Vue.use(VueRouter)
 
@@ -12,7 +14,12 @@ const routes = [{
 {
   path: '/home',
   name: 'home',
-  component: Home
+  component: Home,
+  children: [{
+    // 地址啥也不写，显示默认
+    path: '',
+    component: homehome
+  }]
 }, {
   path: '/login',
   component: Login

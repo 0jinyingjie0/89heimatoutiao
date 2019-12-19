@@ -2,7 +2,8 @@
   <div class="login">
       <el-card class="login-card">
           <div class="title">
-              <img src="../../assets/img/logo_index.png" alt="">
+              <!-- <img src="../../assets/img/logo_index.png" alt=""> -->
+              <img src="../../assets/img/collect.png" alt="">
           </div>
           <!-- 登录表单 -->
           <el-form ref="myForm" style="margin-top:25px" :model="loginForm" :rules="loginRules">
@@ -85,7 +86,8 @@ export default {
 
 <style lang='less' scoped>
 .login {
-    background: url(../../assets/img/login_bg.jpg);
+    // background: url(../../assets/img/login_bg.jpg);
+    background: url(../../assets/dlrb2.jpg);
     background-size: cover;
     height: 100vh;
     display: flex;
