@@ -4,7 +4,7 @@ import router from './router'
 import './styles/index.less'
 import ElementUI from 'element-ui' // 引入UI
 import 'element-ui/lib/theme-chalk/index.css' // 引入样式
-import axios from 'axios'
+import axios from './utils/request'
 import Component from './components'
 import './permission'// 引入权限守卫
 
