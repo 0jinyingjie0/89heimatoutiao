@@ -59,23 +59,16 @@ export default {
     login () {
       this.$refs.myForm.validate((isok) => {
         if (isok) {
-          console.log('哈哈，成功了')
+          // console.log('哈哈，成功了')
           this.$axios({
             url: '/authorizations',
             method: 'post',
             data: this.loginForm
           }).then(result => {
             // 成功了进入,存储令牌
-            window.localStorage.setItem('user-token', result.data.data.token)
+            window.localStorage.setItem('user-token', result.data.token)
             // console.log(result)
             this.$router.push('/home')
-          }).catch(error => {
-            // 失败了，呵呵
-            this.$message({
-              message: '警告,信息输入有误！！',
-              type: 'warning'
-            })
-            console.log(error)
           })
         }
       })
