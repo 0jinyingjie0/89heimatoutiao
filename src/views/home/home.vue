@@ -13,9 +13,10 @@ export default {
 
 <style lang="less" scoped>
     .home {
-        background-image: url('../../assets/img/home.jpg');
-        // background-image: url('../../assets/dlrb2.jpg');
+        // background-image: url('../../assets/img/home.jpg');
+        background-image: url('../../assets/header.jpg');
         height: 100vh;
         background-size: cover;
+        opacity: 0.1;
     }
 </style>
