@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home'
 import Login from '../views/login'
+import Comment from '../views/comment'
 // 默认背景
 import homehome from '../views/home/home'
 
@@ -19,6 +20,9 @@ const routes = [{
     // 地址啥也不写，显示默认
     path: '',
     component: homehome
+  }, {
+    path: 'comment',
+    component: Comment
   }]
 }, {
   path: '/login',
