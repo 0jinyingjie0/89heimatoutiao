@@ -17,6 +17,6 @@ export default {
         background-image: url('../../assets/header.jpg');
         height: 100vh;
         background-size: cover;
-        opacity: 0.1;
+        opacity: 0.7;
     }
 </style>
