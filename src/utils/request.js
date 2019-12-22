@@ -4,7 +4,9 @@ import axios from 'axios'
 import router from '../router'
 // 引入elementui的提示
 import { Message } from 'element-ui'
-// 请求拦截
+// 引入第三方包，处理安全整数
+import JSONBig from 'json-bigint'
+// 请求拦截,统一注入token
 axios.interceptors.request.use(function (config) {
   let token = window.localStorage.getItem('user-token')
   config.headers['Authorization'] = `Bearer ${token}`
@@ -13,6 +15,10 @@ axios.interceptors.request.use(function (config) {
   // 执行请求失败
 
 })
+// 后台数据 到达 响应拦截之前走的一个函数
+axios.defaults.transformResponse = [function (data) {
+  return JSONBig.parse(data) // JSONbig.parse 替换 JSON.parse  保证数字的正确
+}]
 // 响应式拦截
 axios.interceptors.response.use(function (response) {
   // 解决当data不存在时，报错的情况
@@ -45,6 +51,6 @@ axios.interceptors.response.use(function (response) {
   }
   Message({ message })
   // 不再进入catch  终止错误
-//   return new Promise(function () {}) // 终止当前的错误
+  return new Promise(function () {}) // 终止当前的错误
 })
 export default axios
