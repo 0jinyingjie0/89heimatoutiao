@@ -4,18 +4,18 @@
       <template slot="title">素材管理</template>
     </bread-crumb>
     <el-row type="flex" justify="end">
-        <el-upload :http-request="uploadImg" :show-file-list="false">
-            <el-butten type="primary">上传图片</el-butten>
+        <el-upload action :http-request="uploadImg" :show-file-list="false">
+            <el-button type="primary">上传图片</el-button>
         </el-upload>
     </el-row>
 
-    <el-tabs v-model="activeName" @tab-click="changeTab">
+    <el-tabs  v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="素材总数" name="all">
         <div class="img-list">
           <el-card class="img-card" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
             <el-row class="row">
-              <i class="el-icon-star-on r1"></i>
+              <i @click="collectOrCancel(item)" :style="{color:item.is_collected ? 'red' : ''}" class="el-icon-star-on r1"></i>
               <i class="el-icon-delete-solid"></i>
             </el-row>
           </el-card>
@@ -71,6 +71,19 @@ export default {
     }
   },
   methods: {
+    // 收藏或者取消收藏
+    collectOrCancel (item) {
+      this.$axios({
+        url: `user/images/${item.id}`,
+        method: 'put',
+        data: {
+          // 状态取反
+          collect: !item.is_collected
+        }
+      }).then(() => {
+        this.getAll()
+      })
+    },
     uploadImg (params) {
       this.loading = true // 打开进度条
       let form = new FormData()
@@ -82,7 +95,7 @@ export default {
       }).then(result => {
         //   说明已经上传成功了一张图片
         this.loading = false // 关闭进度条
-        this.getAllMaterial()
+        this.getAll()
       })
     },
     //   切换分页
@@ -141,6 +154,9 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      i {
+        cursor: pointer;
+      }
       .r1 {
         font-size: 30px;
       }
