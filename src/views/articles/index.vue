@@ -9,23 +9,23 @@
         <span>文章状态</span>
       </el-col>
       <el-col :span="10">
-        <el-row type="flex">
-          <el-radio>全部</el-radio>
-          <el-radio>草稿</el-radio>
-          <el-radio>待审核</el-radio>
-          <el-radio>审核通过</el-radio>
-          <el-radio>审核失败</el-radio>
-        </el-row>
+        <el-radio-group v-model="formData.status">
+          <el-radio :label="5">全部</el-radio>
+          <el-radio :label="0">草稿</el-radio>
+          <el-radio :label="1">待审核</el-radio>
+          <el-radio :label="2">审核通过</el-radio>
+          <el-radio :label="3">审核失败</el-radio>
+        </el-radio-group>
       </el-col>
-
-      <el-radio-group></el-radio-group>
     </el-row>
     <el-row class="tool">
       <el-col :span="2">
         <span>频道列表</span>
       </el-col>
       <el-col :span="18">
-        <el-select></el-select>
+        <el-select v-model="formData.channel_id">
+          <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        </el-select>
       </el-col>
     </el-row>
     <el-row class="tool">
@@ -54,8 +54,21 @@ export default {
         status: 5,
         channel_id: null,
         dateRange: []
-      }
+      },
+      channels: []
     }
+  },
+  methods: {
+    getChannels () {
+      this.$axios({
+        url: '/channels'
+      }).then(result => {
+        this.channels = result.data.channels
+      })
+    }
+  },
+  created () {
+    this.getChannels()
   }
 }
 </script>
