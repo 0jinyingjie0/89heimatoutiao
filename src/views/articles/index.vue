@@ -47,17 +47,17 @@
     <el-row class="total">
       <span>共找到10条内容</span>
     </el-row>
-    <el-row v-for="item in 10" :key="item" type="flex" justify="space-between" class="item-ar">
-      <el-col :span="6">
+    <el-row v-for="item in list" :key="item.id.toString()" type="flex" justify="space-between" class="item-ar">
+      <el-col :span="18">
         <el-row type="flex">
-          <img src="../../assets/header.jpg" alt />
+          <img :src="item.cover.images.length ? item.cover.images[0]:defaultimg" alt />
           <div class="info">
             <!-- 标题 -->
-            <span>1</span>
+            <span>{{item.title}}</span>
             <!-- 种类标签 -->
-            <el-tag class="tag">标签一</el-tag>
+            <el-tag :type="item.status|filterType" class="tag">{{item.status | filterStatus}}</el-tag>
             <!-- 时间 -->
-            <span class="date">2</span>
+            <span class="date">{{item.pubdate}}</span>
           </div>
         </el-row>
       </el-col>
@@ -80,10 +80,56 @@ export default {
         channel_id: null,
         dateRange: []
       },
-      channels: []
+      channels: [], // 接收频道数据
+      list: [], // 用来接收文章数据
+      defaultimg: require('../../assets/header.jpg')
+    }
+  },
+  filters: {
+    // 处理显示状态
+    filterStatus (value) {
+      // value 是过滤器前面表达式计算得到的值
+      // 文章状态 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      // value 是过滤器前面表达式计算得到的值
+      // 文章状态 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        default:
+          break
+      }
     }
   },
   methods: {
+    //   获取文章列表
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(result => {
+        this.list = result.data.results
+      })
+    },
+    // 获取频道
     getChannels () {
       this.$axios({
         url: '/channels'
@@ -94,6 +140,7 @@ export default {
   },
   created () {
     this.getChannels()
+    this.getArticles()
   }
 }
 </script>
