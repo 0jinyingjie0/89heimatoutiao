@@ -103,6 +103,14 @@ export default {
       }
     }
   },
+  watch: {
+    formData: {
+      handler () {
+        this.changeCondition()
+      },
+      deep: true
+    }
+  },
   filters: {
     // 处理显示状态
     filterStatus (value) {
@@ -170,6 +178,9 @@ export default {
       this.getConditionArticle()
     },
     getConditionArticle () {
+      if (this.formData.dateRange == null) {
+        this.formData.dateRange = []
+      }
       let params = {
         page: this.page.currentPage, // 分页信息
         per_page: this.page.pageSize, // 分页信息

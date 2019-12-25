@@ -6,6 +6,7 @@ import router from '../router'
 import { Message } from 'element-ui'
 // 引入第三方包，处理安全整数
 import JSONBig from 'json-bigint'
+
 // 请求拦截,统一注入token
 axios.interceptors.request.use(function (config) {
   let token = window.localStorage.getItem('user-token')
@@ -19,6 +20,7 @@ axios.interceptors.request.use(function (config) {
 axios.defaults.transformResponse = [function (data) {
   return data ? JSONBig.parse(data) : data // JSONbig.parse 替换 JSON.parse  保证数字的正确
 }]
+
 // 响应式拦截
 axios.interceptors.response.use(function (response) {
   // 解决当data不存在时，报错的情况
