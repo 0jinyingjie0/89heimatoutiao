@@ -25,8 +25,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="publisharticle">发布</el-button>
-        <el-button @click="publisharticle">存入草稿</el-button>
+        <el-button type="primary" @click="publisharticle()">发布</el-button>
+        <el-button @click="publisharticle(true)">存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -60,10 +60,23 @@ export default {
   },
   methods: {
     //   发布文章
-    publisharticle () {
+    publisharticle (draft) {
       this.$refs.publishForm.validate((isOK) => {
         if (isOK) {
           console.log('成功')
+          this.$refs.publishForm.validate((isOK) => {
+            if (isOK) {
+              let { articleId } = this.$route.params // 回去动态路由参数 articleId已经是字符串
+              this.$axios({
+                method: articleId ? 'put' : 'post',
+                url: articleId ? `/articles/${articleId}` : `/articles`,
+                params: { draft }, // query参数
+                data: this.formData
+              }).then(result => {
+                this.$router.push('/home/articles') // 回到内容列表
+              })
+            }
+          })
         }
       })
     },
