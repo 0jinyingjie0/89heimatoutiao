@@ -58,6 +58,34 @@ export default {
       channels: []
     }
   },
+  watch: {
+    $route: function (to, from) {
+      if (Object.keys(to.params).length) {
+        //  有参数  => 修改
+      } else {
+        // 没有参数  => 发布 // 没有参数  => 发布
+        this.formData = {
+          title: '', // 标题
+          content: '', // 文章内容
+          cover: {
+            type: 0, //   封面类型 -1:自动，0-无图，1-1张，3-3张
+            images: [] // 存储的图片的地址
+          }
+        }
+      }
+    },
+    'formData.cover.type': function () {
+      //  this指向组件实例
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        // 无图或者自动模式
+        this.formData.cover.images = []
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = [''] // 单图模式
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', ''] // 单图模式
+      }
+    }
+  },
   methods: {
     //   发布文章
     publisharticle (draft) {

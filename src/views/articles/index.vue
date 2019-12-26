@@ -64,8 +64,8 @@
       </el-col>
       <el-col :span="6">
         <el-row type="flex" justify="end" class="right">
-          <span><i class="el-icon-edit"></i>修改</span>
-          <span><i @click="delArticle" class="el-icon-delete"></i>删除</span>
+          <span @click="toModify(item.id)"><i class="el-icon-edit"></i>修改</span>
+          <span><i @click="delArticle(item.id)" class="el-icon-delete"></i>删除</span>
         </el-row>
       </el-col>
     </el-row>
@@ -147,6 +147,10 @@ export default {
     }
   },
   methods: {
+    // 修改内容
+    toModify (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     // 删除文章
     delArticle (id) {
       // 所有已发布的文章是不可以删除的  只有草稿才可以删除
