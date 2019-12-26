@@ -9,7 +9,7 @@
         <el-input  v-model="formData.title" style="width:60%"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-      <quill-editor style="height:400px;" v-model="formData.content"  ></quill-editor>
+      <quill-editor style="height:400px;" v-model="formData.content"></quill-editor>
       </el-form-item>
       <el-form-item label="封面" prop="type" style="margin-top:100px">
         <el-radio-group v-model="formData.cover.type">
