@@ -259,6 +259,7 @@ export default {
     .right {
         span {
             margin-left: 10px;
+            cursor: pointer;
         }
     }
   }

@@ -87,6 +87,14 @@ export default {
     }
   },
   methods: {
+    //   获取文章详情
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data // 将指定文章数据给data数据
+      })
+    },
     //   发布文章
     publisharticle (draft) {
       this.$refs.publishForm.validate((isOK) => {
@@ -95,6 +103,7 @@ export default {
           this.$refs.publishForm.validate((isOK) => {
             if (isOK) {
               let { articleId } = this.$route.params // 回去动态路由参数 articleId已经是字符串
+              //   修改和发布二合一
               this.$axios({
                 method: articleId ? 'put' : 'post',
                 url: articleId ? `/articles/${articleId}` : `/articles`,
@@ -103,6 +112,15 @@ export default {
               }).then(result => {
                 this.$router.push('/home/articles') // 回到内容列表
               })
+              //   this.$axios({
+              //     url: '/articles',
+              //     method: 'post',
+              //     params: { draft }, // query参数
+              //     data: this.formData
+              //   }).then(() => {
+              //   // 新增成功 => 应该去内容列表
+              //     this.$router.push('/home/articles') // 回到内容列表
+              //   })
             }
           })
         }
@@ -120,6 +138,9 @@ export default {
   },
   created () {
     this.getChannels()
+    // 获取id 判断有无id  有id 就是修改 没id就是发布
+    let { articleId } = this.$route.params // 回去动态路由参数 articleId已经是字符串
+    articleId && this.getArticleById(articleId) // 获取文章数据
   }
 }
 </script>
