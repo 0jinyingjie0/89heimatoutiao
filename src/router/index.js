@@ -37,7 +37,7 @@ const routes = [{
     component: () => import('../views/publish')
   }, {
     path: 'account',
-    comment: () => import('../views/account')
+    component: () => import('../views/account')
   }]
 }, {
   path: '/login',
