@@ -1,10 +1,10 @@
 <template>
-    <el-card>
+    <el-card v-loading="loading">
         <bread-crumb slot="header">
             <template slot="title"></template>
         </bread-crumb>
         <!-- 放置上传组件 -->
-      <el-upload  class='head-upload' action="" :show-file-list="false">
+      <el-upload :http-request="uploadImg" class='head-upload' action="" :show-file-list="false">
           <img :src="formData.photo ? formData.photo : defaultImg" alt="">
       </el-upload>
       <!-- 放置组件 -->
@@ -58,6 +58,21 @@ export default {
     }
   },
   methods: {
+    //   上传组件
+    uploadImg (params) {
+      this.loading = true
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.$axios({
+        url: '/user/photo',
+        method: 'patch',
+        data
+      }).then(result => {
+        //   设置头像地址
+        this.formData.photo = result.data.photo
+        this.loading = false
+      })
+    },
     //   保存信息
     saveUserInfo () {
       // 校验表单数据
