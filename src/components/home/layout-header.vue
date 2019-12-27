@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -37,15 +38,29 @@ export default {
   },
   created () {
     // let token = window.localStorage.getItem('user-token')
-    this.$axios({
-      url: '/user/profile'
+    // this.$axios({
+    //   url: '/user/profile'
 
-    }).then(result => {
-      this.userInfo = result.data
-      console.log(result.data)
+    // }).then(result => {
+    //   this.userInfo = result.data
+    //   console.log(result.data)
+    // })
+    this.getUserInfo()
+    eventBus.$on('updateUserInfoSuccess', () => {
+      // alert('嘻嘻')
+      this.getUserInfo()
     })
   },
   methods: {
+    getUserInfo () {
+      this.$axios({
+        url: '/user/profile'
+
+      }).then(result => {
+        this.userInfo = result.data
+        console.log(result.data)
+      })
+    },
     handle (command) {
       // 区分点击的菜单项
       if (command === 'lgout') {
@@ -53,6 +68,8 @@ export default {
         this.$router.push('/login')
       } else if (command === 'git') {
         window.location.href = 'https://github.com/0jinyingjie0/89heimatoutiao'
+      } else if (command === 'info') {
+        this.$router.push('/home/account')
       }
     }
   }
