@@ -8,21 +8,21 @@
           <img :src="formData.photo ? formData.photo : defaultImg" alt="">
       </el-upload>
       <!-- 放置组件 -->
-        <el-form style="margin-top:60px" label-width="100px">
-            <el-form-item label="用户名">
+        <el-form ref="myform" style="margin-top:60px" label-width="100px" :model="formData" :rules="rules">
+            <el-form-item label="用户名" prop="name">
                 <el-input v-model="formData.name" style="width:50%"></el-input>
             </el-form-item>
-            <el-form-item label="简介">
+            <el-form-item label="简介" prop="intro">
                 <el-input v-model="formData.intro" style="width:50%"></el-input>
             </el-form-item>
-            <el-form-item label="邮箱">
+            <el-form-item label="邮箱" prop="email">
                 <el-input v-model="formData.email" style="width:50%"></el-input>
             </el-form-item>
-            <el-form-item label="手机号">
+            <el-form-item label="手机号" prop="mobile">
                 <el-input v-model="formData.mobile" disabled style="width:50%"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" >保存信息</el-button>
+                <el-button type="primary" @click="saveUserInfo">保存信息</el-button>
             </el-form-item>
         </el-form>
     </el-card>
@@ -41,6 +41,7 @@ export default {
         email: '', // 邮箱
         mobile: '' // 手机号
       },
+      //   定义规则
       rules: {
         name: [{ required: true, message: '用户名不能为空' }, {
           min: 1,
@@ -57,6 +58,25 @@ export default {
     }
   },
   methods: {
+    //   保存信息
+    saveUserInfo () {
+      // 校验表单数据
+      this.$refs.myform.validate((isok) => {
+        if (isok) {
+          this.$axios({
+            url: '/user/profile',
+            method: 'patch',
+            data: this.formData
+          }).then(result => {
+            //   认为保存成功
+            this.$message({
+              type: 'success',
+              message: '保存信息成功'
+            })
+          })
+        }
+      })
+    },
     //   获取用户信息
     getUserInfo () {
       this.$axios({
