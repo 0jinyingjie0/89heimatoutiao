@@ -10,16 +10,16 @@
       <!-- 放置组件 -->
         <el-form style="margin-top:60px" label-width="100px">
             <el-form-item label="用户名">
-                <el-input style="width:50%"></el-input>
+                <el-input v-model="formData.name" style="width:50%"></el-input>
             </el-form-item>
             <el-form-item label="简介">
-                <el-input style="width:50%"></el-input>
+                <el-input v-model="formData.intro" style="width:50%"></el-input>
             </el-form-item>
             <el-form-item label="邮箱">
-                <el-input style="width:50%"></el-input>
+                <el-input v-model="formData.email" style="width:50%"></el-input>
             </el-form-item>
             <el-form-item label="手机号">
-                <el-input disabled style="width:50%"></el-input>
+                <el-input v-model="formData.mobile" disabled style="width:50%"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" >保存信息</el-button>
@@ -55,6 +55,19 @@ export default {
       }, // 定义一个规则
       defaultImg: require('../../assets/header.jpg')
     }
+  },
+  methods: {
+    //   获取用户信息
+    getUserInfo () {
+      this.$axios({
+        url: '/user/profile'
+      }).then(result => {
+        this.formData = result.data
+      })
+    }
+  },
+  created () {
+    this.getUserInfo()
   }
 }
 </script>
