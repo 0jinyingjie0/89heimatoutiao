@@ -59,7 +59,6 @@ export default {
     login () {
       this.$refs.myForm.validate((isok) => {
         if (isok) {
-          // console.log('哈哈，成功了')
           this.$axios({
             url: '/authorizations',
             method: 'post',
@@ -67,7 +66,7 @@ export default {
           }).then(result => {
             // 成功了进入,存储令牌
             window.localStorage.setItem('user-token', result.data.token)
-            // console.log(result)
+
             this.$router.push('/home')
           })
         }

@@ -27,7 +27,6 @@ axios.interceptors.response.use(function (response) {
   return response.data ? response.data : {}
 }, function (error) {
   // 执行请求失败
-//   console.log(error)
   let status = error.response.status // 获取失败的状态码
   let message = '未知错误'
   switch (status) {

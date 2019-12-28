@@ -45,7 +45,7 @@ export default {
 
     // }).then(result => {
     //   this.userInfo = result.data
-    //   console.log(result.data)
+
     // })
     this.getUserInfo()
     eventBus.$on('updateUserInfoSuccess', () => {
@@ -63,7 +63,6 @@ export default {
         url: '/user/profile'
       }).then(result => {
         this.userInfo = result.data
-        console.log(result.data)
       })
     },
     handle (command) {
