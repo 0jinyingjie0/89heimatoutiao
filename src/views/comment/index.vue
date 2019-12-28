@@ -53,52 +53,48 @@ export default {
       this.page.currentPage = newPage
       this.comment()
     },
-    comment () {
+    async comment () {
       // 打开时加载的状态
-      this.$axios({
+      let result = await this.$axios({
         url: '/articles',
         params: {
           response_type: 'comment',
           page: this.page.currentPage,
           per_page: this.page.pageSize
         }
-      }).then(result => {
-        this.list = result.data.results
-        // 获取文章的总条数
-        this.page.total = result.data.total_count
-        // 设置加载状态
-        this.loading = false
       })
+      this.list = result.data.results
+      // 获取文章的总条数
+      this.page.total = result.data.total_count
+      // 设置加载状态
+      this.loading = false
     },
     // 状态的布尔值转化方法
     formatterBool (row, column, cellValue) {
       return cellValue ? '正常' : '关闭'
     },
     // 打开或关闭评论的方法
-    openOrClose (row) {
+    async openOrClose (row) {
       let mess = row.comment_status ? '关闭' : '打开'
       // 显示提示信息
-      this.$confirm(`您是否确定要${mess}评论吗`).then(() => {
-        // 调用接口，改变评论状态
-        this.$axios({
-          method: 'put',
-          url: '/comments/status',
-          // 对返回的id进行大数据处理
-          params: {
-            article_id: row.id.toString()
-          },
-          data: {
-            allow_comment: !row.comment_status
-          }
-        }).then(result => {
-          // 成功之后显示提示信息，并重新加载列表
-          this.$message({
-            type: 'success',
-            message: '操作成功'
-          })
-          this.comment()
-        })
+      await this.$confirm(`您是否确定要${mess}评论吗`)
+      // 调用接口，改变评论状态
+      await this.$axios({
+        method: 'put',
+        url: '/comments/status',
+        // 对返回的id进行大数据处理
+        params: {
+          article_id: row.id.toString()
+        },
+        data: {
+          allow_comment: !row.comment_status
+        }
       })
+      this.$message({
+        type: 'success',
+        message: '操作成功'
+      })
+      this.comment()
     }
   },
   created () {

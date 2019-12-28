@@ -152,22 +152,20 @@ export default {
       this.$router.push(`/home/publish/${id.toString()}`)
     },
     // 删除文章
-    delArticle (id) {
+    async delArticle (id) {
       // 所有已发布的文章是不可以删除的  只有草稿才可以删除
-      this.$confirm('您是否要删除这个文章?').then(() => {
-        // 直接删除
-        this.$axios({
-          method: 'delete',
-          url: `/articles/${id.toString()}`
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除文章成功!'
-          })
-          // this.page.currentPage = 1 // 如果想回第一个页 就赋值 为1 否则不用管
-          this.getConditionArticle() // 重新调用
-        })
+      await this.$confirm('您是否要删除这个文章?')
+      // 直接删除
+      await this.$axios({
+        method: 'delete',
+        url: `/articles/${id.toString()}`
       })
+      this.$message({
+        type: 'success',
+        message: '删除文章成功!'
+      })
+      // this.page.currentPage = 1 // 如果想回第一个页 就赋值 为1 否则不用管
+      this.getConditionArticle() // 重新调用
     },
     // 改变页码事件
     changePage (newPage) {
@@ -208,13 +206,12 @@ export default {
       })
     },
     // 获取频道
-    getChannels () {
-      this.$axios({
+    async getChannels () {
+      let result = await this.$axios({
         url: '/channels'
-      }).then(result => {
-        //   获取频道数据
-        this.channels = result.data.channels
       })
+      //   获取频道数据
+      this.channels = result.data.channels
     }
   },
   created () {
