@@ -1,15 +1,21 @@
 <template>
+  <!-- 放置一个外层容器 -->
   <el-container>
-    <!-- 先左右布局 -->
-    <el-aside style="background-color:#353b4e;min-height:100vh;width:230px">
-      <layout-aside></layout-aside>
+    <!-- 左右布局 -->
+    <el-aside :style="{ width: collapse ? '60px' : '230px' }" style="transition:all 0.3s; background-color:#353b4e;min-height:100vh;">
+      <!-- 放置左侧组件 -->
+      <layout-aside :collapse="collapse"></layout-aside>
     </el-aside>
-    <!-- 右侧布局 -->
+    <!-- 再放置一个container -->
     <el-container>
+      <!-- 上下布局 -->
       <el-header>
-        <layout-header></layout-header>
+        <!-- 头部组件 -->
+         <layout-header></layout-header>
       </el-header>
+      <!-- 主要区域 -->
       <el-main style="padding:0">
+        <!-- 二级路由容器 -->
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -17,10 +23,21 @@
 </template>
 
 <script>
-
+import eventBus from '../../utils/eventBus'
 export default {
+  data () {
+    return {
+      collapse: false // 是否折叠
+    }
+  },
   components: {
 
+  },
+  created () {
+    // 开启监听
+    eventBus.$on('changeCollapse', () => {
+      this.collapse = !this.collapse
+    })
   }
 }
 </script>
